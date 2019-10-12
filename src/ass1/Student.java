@@ -26,4 +26,11 @@ public class Student implements IAggregable<Student, Double>, IDeeplyCloneable<S
         return new Student(name, averageGrade);
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", averageGrade=" + averageGrade +
+                '}';
+    }
 }
