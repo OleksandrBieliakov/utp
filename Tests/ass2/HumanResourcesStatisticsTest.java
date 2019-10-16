@@ -174,7 +174,7 @@ public class HumanResourcesStatisticsTest {
         _allEmployees.add(worker9);
 
         director = new Manager("Bob", "Hill", LocalDate.of(1954, 2, 20),
-                new BigDecimal(10000), null, LocalDate.of(2008, 4, 2),
+                new BigDecimal(10000), null, LocalDate.of(2000, 4, 2),
                 new BigDecimal(5000), directorSubs);
         _allEmployees.add(director);
 
@@ -211,6 +211,10 @@ public class HumanResourcesStatisticsTest {
         Assert.assertEquals(new BigDecimal(12000), HumanResourcesStatistics.bonusTotal(_allEmployees));
     }
 
+    @Test
+    public void longestSeniority() {
+        Assert.assertEquals(director.worksDays(), ((Worker)HumanResourcesStatistics.longestSeniority(_allEmployees)).worksDays());
+    }
     /// ...
     // rest of the methods specified in the assignment description
 }
