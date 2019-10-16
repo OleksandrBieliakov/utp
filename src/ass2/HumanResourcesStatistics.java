@@ -31,7 +31,9 @@ final class HumanResourcesStatistics {
     }
 
     static Employee longestSeniority(List<Employee> employees) {
-        return null;
+        List<Worker> workers = employees.stream().filter(e -> e.getClass().getName().
+                equals(Worker.class.getName())).map(e -> (Worker)e).collect(Collectors.toList());
+        return workers.stream().reduce(workers.get(0), (part, next) -> part.worksDays() > next.worksDays() ? part : next);
     }
 
     /// ...

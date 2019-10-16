@@ -2,6 +2,7 @@ package ass2.employee;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 
 public class Worker extends Employee {
 
@@ -24,6 +25,10 @@ public class Worker extends Employee {
 
     public BigDecimal getBonus() {
         return bonus;
+    }
+
+    public int worksDays() {
+        return Period.between(employmentDate, LocalDate.now()).getDays();
     }
 
     public void setBonus(BigDecimal bonus) {
