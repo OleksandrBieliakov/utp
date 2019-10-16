@@ -1,6 +1,7 @@
 package ass2.payroll;
 
 import ass2.employee.Employee;
+import ass2.employee.Worker;
 
 import java.math.BigDecimal;
 
@@ -15,6 +16,10 @@ public final class PayrollEntry {
             salaryPlusBonus = salary.add(bonus); // validate whether salary and bonus are not null
         else if (salary == null) salaryPlusBonus = bonus;
         else salaryPlusBonus = salary;
+    }
+
+    public PayrollEntry(Employee employee) {
+        this(employee, employee.getSalary(), employee instanceof Worker ? (((Worker) employee).getBonus()) : null);
     }
 
     public Employee getEmployee() {
