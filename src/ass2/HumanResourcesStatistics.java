@@ -9,7 +9,6 @@ import ass2.payroll.PayrollEntry;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -26,8 +25,10 @@ final class HumanResourcesStatistics {
     }
 
     static BigDecimal bonusTotal(List<Employee> employees) {
-        return employees.stream().filter(e -> !(e instanceof Trainee)).
-                map(e -> ((Worker) e).getBonus()).reduce(new BigDecimal(0), BigDecimal::add);
+        return employees.stream().
+                filter(e -> !(e instanceof Trainee)).
+                map(e -> ((Worker) e).getBonus()).
+                reduce(new BigDecimal(0), BigDecimal::add);
     }
 
     static Employee longestSeniority(List<Employee> employees) {
@@ -40,22 +41,31 @@ final class HumanResourcesStatistics {
 
     static BigDecimal biggestSalary(List<Employee> employees) {
         if (employees == null || employees.size() == 0) return null;
-        return employees.stream().reduce(employees.get(0), (part, next) -> part.getSalary().
-                compareTo(next.getSalary()) >= 0 ? part : next).getSalary();
+        return employees.stream().
+                reduce(employees.get(0), (part, next) -> part.getSalary().
+                        compareTo(next.getSalary()) >= 0 ? part : next).
+                getSalary();
     }
 
     static BigDecimal biggestSalaryWithBonus(List<Employee> employees) {
         if (employees == null || employees.size() == 0) return null;
-        return Objects.requireNonNull(payroll(employees).stream().max(Comparator.comparing(PayrollEntry::getSalaryPlusBonus)).orElse(null)).getSalaryPlusBonus();
+        return payroll(employees).stream().
+                map(PayrollEntry::getSalaryPlusBonus).
+                max(Comparator.comparing(p -> p)).
+                orElse(null);
     }
 
     static List<Employee> findSubordinatesByName(Manager manager, String key) {
-        return manager.getSubordinates().stream().filter(e -> e.getSurname().indexOf(key) == 0).collect(Collectors.toList());
+        return manager.getSubordinates().stream().
+                filter(e -> e.getSurname().indexOf(key) == 0).
+                collect(Collectors.toList());
     }
 
     static List<Employee> earnMoreThan(List<Employee> employees, BigDecimal key) {
-        return payroll(employees).stream().filter(e -> e.getSalaryPlusBonus().compareTo(key) > 0).
-                map(PayrollEntry::getEmployee).collect(Collectors.toList());
+        return payroll(employees).stream().
+                filter(e -> e.getSalaryPlusBonus().compareTo(key) > 0).
+                map(PayrollEntry::getEmployee).
+                collect(Collectors.toList());
     }
     /// ...
     // rest of the methods specified in the assignment description
