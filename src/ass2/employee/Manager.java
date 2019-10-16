@@ -27,11 +27,7 @@ public final class Manager extends Worker {
         List<Employee> subordinatesAll = new ArrayList<>();
         if (subordinates == null) return subordinatesAll;
         subordinatesAll.addAll(subordinates);
-        for (Employee sub : subordinates) {
-            if (sub.getClass().getName().equals(Manager.class.getName())) {
-                subordinatesAll.addAll(((Manager) sub).getSubordinatesAll());
-            }
-        }
+        subordinates.forEach(s -> {if(s instanceof Manager) subordinatesAll.addAll(((Manager)s).getSubordinatesAll());});
         return subordinatesAll;
     }
 
