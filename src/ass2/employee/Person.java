@@ -42,8 +42,26 @@ public abstract class Person {
         return birthDate;
     }
 
-    public int getAge() {
-        return Period.between(birthDate, LocalDate.now()).getYears();
+    public Period getAge() {
+        return Period.between(birthDate, LocalDate.now());
+    }
+
+    // (assignment 03)
+    // methods:
+    // * is older than other person
+    // * is younger than other person
+    // * compare age with other person's age
+
+    public boolean isOlder(Person other) {
+        return birthDate.compareTo(other.birthDate) < 0;
+    }
+
+    public boolean isYounger(Person other) {
+        return birthDate.compareTo(other.birthDate) > 0;
+    }
+
+    public int compareAge(Person other) {
+        return birthDate.compareTo(other.birthDate) * (-1);
     }
 
 }

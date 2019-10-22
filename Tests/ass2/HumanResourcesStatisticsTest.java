@@ -92,36 +92,36 @@ public class HumanResourcesStatisticsTest {
 
         worker1 = new Worker("Elon", "Pill", LocalDate.of(1984, 2, 20),
                 new BigDecimal(3000), manager1, LocalDate.of(2016, 4, 2),
-                new BigDecimal(500));
+                null);
         manager1Sub.add(worker1);
         allEmployees.add(worker1);
 
         worker2 = new Worker("Hop", "Dog", LocalDate.of(1984, 2, 20),
                 new BigDecimal(3000), manager1, LocalDate.of(2016, 4, 2),
-                new BigDecimal(500));
+                new BigDecimal(200));
         manager1Sub.add(worker2);
         allEmployees.add(worker2);
 
         trainee1 = new Trainee("Hop", "Dog", LocalDate.of(1984, 2, 20),
-                new BigDecimal(2000), manager1, LocalDate.of(2016, 4, 2), 30);
+                new BigDecimal(2000), manager1, LocalDate.of(2019, 9, 2));
         manager1Sub.add(trainee1);
         allEmployees.add(trainee1);
 
         worker3 = new Worker("Elon", "Pill", LocalDate.of(1984, 2, 20),
-                new BigDecimal(3000), manager2, LocalDate.of(2016, 4, 2),
+                new BigDecimal(3000), manager2, LocalDate.of(2018, 4, 2),
                 new BigDecimal(500));
         manager2Sub.add(worker3);
         allEmployees.add(worker3);
 
 
         worker4 = new Worker("Gosha", "Fock", LocalDate.of(1984, 2, 20),
-                new BigDecimal(3000), manager3, LocalDate.of(2016, 4, 2),
+                new BigDecimal(3000), manager3, LocalDate.of(2018, 4, 2),
                 new BigDecimal(500));
         manager3Sub.add(worker4);
         allEmployees.add(worker4);
 
         worker5 = new Worker("Lopa", "Rapo", LocalDate.of(1984, 2, 20),
-                new BigDecimal(3000), manager3, LocalDate.of(2016, 4, 2),
+                new BigDecimal(3000), manager3, LocalDate.of(2018, 4, 2),
                 new BigDecimal(500));
         manager3Sub.add(worker5);
         allEmployees.add(worker5);
@@ -145,31 +145,31 @@ public class HumanResourcesStatisticsTest {
         allEmployees.add(worker8);
 
         trainee2 = new Trainee("Dilop", "Taogot", LocalDate.of(1984, 2, 20),
-                new BigDecimal(3000), director, LocalDate.of(2016, 4, 2), 30);
+                new BigDecimal(3000), director, LocalDate.of(2019, 10, 2));
         directorSubs.add(trainee2);
         allEmployees.add(trainee2);
 
         trainee3 = new Trainee("Solo", "Tasheer", LocalDate.of(1984, 2, 20),
-                new BigDecimal(3000), director, LocalDate.of(2016, 4, 2), 30);
+                new BigDecimal(3000), director, LocalDate.of(2019, 10, 2));
         directorSubs.add(trainee3);
         allEmployees.add(trainee3);
 
         trainee4 = new Trainee("G", "G", LocalDate.of(1984, 2, 20),
-                new BigDecimal(2000), manager4, LocalDate.of(2016, 4, 2), 30);
+                new BigDecimal(2000), manager4, LocalDate.of(2019, 7, 2));
         manager4Sub.add(trainee4);
         allEmployees.add(trainee4);
 
         trainee5 = new Trainee("G", "G", LocalDate.of(1984, 2, 20),
-                new BigDecimal(2000), manager4, LocalDate.of(2016, 4, 2), 30);
+                new BigDecimal(2000), manager4, LocalDate.of(2019, 7, 2));
         manager4Sub.add(trainee5);
         allEmployees.add(trainee5);
 
-        trainee6 = new Trainee("Gee", "Gaas", LocalDate.of(1984, 2, 20),
-                new BigDecimal(2000), manager4, LocalDate.of(2016, 4, 2), 30);
+        trainee6 = new Trainee("Gee", "Gaas", LocalDate.of(1950, 2, 20),
+                new BigDecimal(2000), manager4, LocalDate.of(2019, 8, 2));
         manager4Sub.add(trainee6);
         allEmployees.add(trainee6);
 
-        worker9 = new Worker("Popol", "Girus", LocalDate.of(1984, 2, 20),
+        worker9 = new Worker("Popol", "Girus", LocalDate.of(1950, 2, 20),
                 new BigDecimal(3000), manager4, LocalDate.of(2016, 4, 2),
                 new BigDecimal(500));
         manager4Sub.add(worker9);
@@ -196,7 +196,7 @@ public class HumanResourcesStatisticsTest {
     public void payroll() {
         List<PayrollEntry> payrolls = HumanResourcesStatistics.payroll(allEmployees);
         Assert.assertEquals(20, payrolls.size());
-        Assert.assertEquals(new BigDecimal(84000),
+        Assert.assertEquals(new BigDecimal(83200),
                 payrolls.stream().map(PayrollEntry::getSalaryPlusBonus).reduce(new BigDecimal(0), BigDecimal::add));
     }
 
@@ -204,13 +204,13 @@ public class HumanResourcesStatisticsTest {
     public void subordinatesPayroll() {
         List<PayrollEntry> payrolls = HumanResourcesStatistics.subordinatesPayroll(manager1);
         Assert.assertEquals(3, payrolls.size());
-        Assert.assertEquals(new BigDecimal(9000),
+        Assert.assertEquals(new BigDecimal(8200),
                 payrolls.stream().map(PayrollEntry::getSalaryPlusBonus).reduce(new BigDecimal(0), BigDecimal::add));
     }
 
     @Test
     public void bonusTotal() {
-        Assert.assertEquals(new BigDecimal(12000), HumanResourcesStatistics.bonusTotal(allEmployees));
+        Assert.assertEquals(new BigDecimal(11200), HumanResourcesStatistics.bonusTotal(allEmployees));
     }
 
     @Test
@@ -245,4 +245,24 @@ public class HumanResourcesStatisticsTest {
     }
     /// ...
     // rest of the methods specified in the assignment description
+
+    @Test
+    public void olderThenAndEarnMore() {
+        Assert.assertEquals(2, HumanResourcesStatistics.olderThenAndEarnLess(allEmployees, director).size());
+    }
+
+    @Test
+    public void practiceLengthLongerThan() {
+        Assert.assertEquals(3, HumanResourcesStatistics.practiceLengthLongerThan(allEmployees, 60).size());
+    }
+
+    @Test
+    public void seniorityLongerThan() {
+        Assert.assertEquals(2, HumanResourcesStatistics.seniorityLongerThan(allEmployees, 24).size());
+    }
+
+    @Test
+    public void seniorityBetweenOneAndThreeYears() {
+        Assert.assertEquals(3, HumanResourcesStatistics.seniorityBetweenOneAndThreeYears(allEmployees).size());
+    }
 }

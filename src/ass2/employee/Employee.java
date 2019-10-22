@@ -35,4 +35,26 @@ public abstract class Employee extends Person {
         this.manager = manager;
     }
 
+    // (assignment 03)
+    // methods:
+    // * salary is greater than given amount of money
+    // * salary is less than given amount of money
+    // * compare salary with other employee salary
+
+    public boolean salaryGreaterThan(BigDecimal sum) {
+        return salary.compareTo(sum) > 0;
+    }
+
+    public boolean salaryLessThan(BigDecimal sum) {
+        return salary.compareTo(sum) < 0;
+    }
+
+    public int compareSalary(Employee other) {
+        return salary.compareTo(other.salary);
+    }
+
+    public void giveRaise(double raise) {
+        salary = salary.multiply(new BigDecimal(raise));
+    }
+
 }
