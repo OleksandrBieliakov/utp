@@ -9,6 +9,7 @@ import ass2.payroll.PayrollEntry;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
@@ -81,8 +82,12 @@ final class HumanResourcesStatistics {
     // * search for Employees older than given employee and earning less than him
     //   wyszukaj osoby zatrudnione (Employee), które s¹ starsze od podanej innej zatrudnionej osoby oraz zarabiaj¹ mniej od niej
     static List<Employee> olderThenAndEarnLess(List<Employee> allEmployees, Employee employee) {
+        Predicate<Employee> olderThan = e -> e.isOlder(employee);
+        Predicate<Employee> earnsLess = e -> e.compareSalary(employee) < 1;
+        Predicate<Employee> olderThanEarnLess = olderThan.and(earnsLess);
+
         return allEmployees.stream().
-                filter(e -> e.isOlder(employee) && e.compareSalary(employee) < 1).
+                filter(olderThanEarnLess).
                 collect(Collectors.toList());
     }
 
@@ -91,13 +96,24 @@ final class HumanResourcesStatistics {
     //   wyszukaj praktykantów (Trainee), których praktyka jest d³u¿sza od podanej liczby dni,
     //   a nastêpnie podnieœ ich uposa¿enie o 5%
     static List<Trainee> practiceLengthLongerThan(List<Employee> allEmployees, int daysCount) {
-        return allEmployees.stream().
-                filter(e -> e instanceof Trainee).
-                filter(e -> ((Trainee) e).practiceLongerThan(daysCount)).
-                map(e -> {
-                    e.giveRaise(0.05);
-                    return (Trainee) e;
-                }).collect(Collectors.toList());
+        double raise = 0.05;
+        Predicate<Trainee> practiceLongerDays = t -> t.practiceLongerThan(daysCount);
+
+        List<Trainee> trainees = allEmployees.stream().
+                filter(HumanResourcesStatistics::isTrainee).
+                map(HumanResourcesStatistics::toTrainee).
+                filter(practiceLongerDays).
+                collect(Collectors.toList());
+        trainees.forEach(t -> t.giveRaise(raise));
+        return trainees;
+    }
+
+    private static boolean isTrainee(Employee e) {
+        return e instanceof Trainee;
+    }
+
+    private static Trainee toTrainee(Employee e) {
+        return (Trainee) e;
     }
 
     //
@@ -105,27 +121,42 @@ final class HumanResourcesStatistics {
     //   wyszukaj pracowników o sta¿u d³u¿szym ni¿ podana liczba miesiêcy,
     //   a nastêpnie przyznaj im premiê w wysokoœci 300 jeœli ich premia jest ni¿sza
     static List<Worker> seniorityLongerThan(List<Employee> allEmployees, int monthCount) {
-        return allEmployees.stream().
-                filter(e -> e instanceof Worker).
-                filter(e -> ((Worker) e).seniorityLongerThanMonths(monthCount)
-                        && ((Worker) e).hasBonusSmallerThan(new BigDecimal(300))).
-                map(e -> {
-                    ((Worker) e).setBonus(new BigDecimal(300));
-                    return (Worker) e;
-                }).collect(Collectors.toList());
+        final Predicate<Worker> seniorityLongerThan = worker -> worker.seniorityLongerThanMonths(monthCount);
+        final BigDecimal _300 = BigDecimal.valueOf(300);
+        final Predicate<Worker> hasBonusLessThan = worker -> worker.hasBonusSmallerThan(_300);
+        final Predicate<Worker> seniorityLongerThanBonusLessThan = seniorityLongerThan.and(hasBonusLessThan);
+
+        List<Worker> workers = allEmployees.stream()
+                .filter(HumanResourcesStatistics::isWorker)
+                .map(HumanResourcesStatistics::toWorker)
+                .filter(seniorityLongerThanBonusLessThan)
+                .collect(Collectors.toList());
+        workers.forEach(e -> e.setBonus(_300));
+        return workers;
+    }
+
+    private static boolean isWorker(Employee employee) {
+        return employee instanceof Worker;
+    }
+
+    private static Worker toWorker(Employee employee) {
+        return (Worker) employee;
     }
 
     //
     // * search for Workers whose seniority is between 1 and 3 years and give them raise of salary by 10%
     //   wyszukaj pracowników o sta¿u pomiêdzy 1 a 3 lata i przyznaj im podwy¿kê w wysokoœci 10%
     static List<Worker> seniorityBetweenOneAndThreeYears(List<Employee> allEmployees) {
-        return allEmployees.stream().
-                filter(e -> e instanceof Worker).
-                filter(e -> ((Worker) e).seniorityLongerThanYears(1) && ((Worker) e).seniorityLessThanYears(3)).
-                map(e -> {
-                    e.giveRaise(0.1);
-                    return (Worker) e;
-                }).collect(Collectors.toList());
+        double raise = 0.1;
+        Predicate<Worker> seniorityBetween = w -> w.seniorityLongerThanYears(1) && w.seniorityLessThanYears(3);
+
+        List<Worker> workers = allEmployees.stream().
+                filter(HumanResourcesStatistics::isWorker).
+                map(HumanResourcesStatistics::toWorker).
+                filter(seniorityBetween).
+                collect(Collectors.toList());
+        workers.forEach(w -> w.giveRaise(raise));
+        return workers;
     }
 
     //
@@ -133,23 +164,32 @@ final class HumanResourcesStatistics {
     //   wyszukaj pracowników o sta¿u d³u¿szym ni¿ sta¿ podanego pracownika i którzy zarabiaj¹ mniej od niego,
     //   nastêpnie zrównaj ich wynagrodzenie z wynagrodzeniem danego pracownika
     static List<Worker> seniorityLongerThanAndSmallerSalary(List<Employee> allEmployees, Employee employee) {
-        return allEmployees.stream().
-                filter(e -> e instanceof Worker).
-                filter(e -> ((Worker) e).compareSeniority((Worker) employee) > 0 && e.compareSalary(employee) < 0).
-                map(e -> {
-                    e.setSalary(employee.getSalary());
-                    return (Worker) e;
-                }).collect(Collectors.toList());
+        Predicate<Worker> seniorityLonger = w -> w.compareSeniority((Worker) employee) > 0;
+        Predicate<Worker> salaryLess = w -> w.compareSalary(employee) < 0;
+        Predicate<Worker> seniorityLongerSalaryLess = seniorityLonger.and(salaryLess);
+        BigDecimal salary = employee.getSalary();
+
+        List<Worker> workers = allEmployees.stream().
+                filter(HumanResourcesStatistics::isWorker).
+                map(HumanResourcesStatistics::toWorker).
+                filter(seniorityLongerSalaryLess).
+                collect(Collectors.toList());
+        workers.forEach(w -> w.setSalary(salary));
+        return workers;
     }
 
     //
     // * search for Workers whose seniority is between 2 and 4 years and whose age is greater than given number of years
     //   wyszukaj pracowników o sta¿u pomiêdzy 2 i 4 lata i starszych ni¿ podana liczba lat
     static List<Worker> seniorityBetweenTwoAndFourYearsAndAgeGreaterThan(List<Employee> allEmployees, int age) {
+        Predicate<Worker> seniorityBetween = w -> w.seniorityLessThanYears(4) && w.seniorityLongerThanYears(2);
+        Predicate<Worker> ageGreater = w -> w.olderThanYears(age);
+        Predicate<Worker> seniorityBetweenAgeGreater = seniorityBetween.and(ageGreater);
+
         return allEmployees.stream().
-                filter(e -> e instanceof Worker).
-                map(e -> (Worker) e).
-                filter(e -> (e.seniorityLongerThanYears(2) && e.seniorityLessThanYears(4) && e.olderThanYears(age))).
+                filter(HumanResourcesStatistics::isWorker).
+                map(HumanResourcesStatistics::toWorker).
+                filter(seniorityBetweenAgeGreater).
                 collect(Collectors.toList());
     }
 
