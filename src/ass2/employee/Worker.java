@@ -79,6 +79,10 @@ public class Worker extends Employee {
         return employmentDate.compareTo(LocalDate.now().minusMonths(months)) > 0;
     }
 
+    public int compareSeniority(Worker other) {
+        return employmentDate.compareTo(other.employmentDate) * (-1);
+    }
+
     public boolean hasBonusGreaterThan(BigDecimal sum) {
         return hasBonus && bonus.compareTo(sum) > 0;
     }

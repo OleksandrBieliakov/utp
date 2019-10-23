@@ -132,15 +132,25 @@ final class HumanResourcesStatistics {
     // * search for Workers whose seniority is longer than the seniority of a given employee and earn less than him and align their salary with the given employee
     //   wyszukaj pracowników o sta¿u d³u¿szym ni¿ sta¿ podanego pracownika i którzy zarabiaj¹ mniej od niego,
     //   nastêpnie zrównaj ich wynagrodzenie z wynagrodzeniem danego pracownika
-    static List<Worker> seniorityLongerThan(List<Employee> allEmployees, Employee employee) {
-        return null;
+    static List<Worker> seniorityLongerThanAndSmallerSalary(List<Employee> allEmployees, Employee employee) {
+        return allEmployees.stream().
+                filter(e -> e instanceof Worker).
+                filter(e -> ((Worker) e).compareSeniority((Worker) employee) > 0 && e.compareSalary(employee) < 0).
+                map(e -> {
+                    e.setSalary(employee.getSalary());
+                    return (Worker) e;
+                }).collect(Collectors.toList());
     }
 
     //
     // * search for Workers whose seniority is between 2 and 4 years and whose age is greater than given number of years
     //   wyszukaj pracowników o sta¿u pomiêdzy 2 i 4 lata i starszych ni¿ podana liczba lat
     static List<Worker> seniorityBetweenTwoAndFourYearsAndAgeGreaterThan(List<Employee> allEmployees, int age) {
-        return null;
+        return allEmployees.stream().
+                filter(e -> e instanceof Worker).
+                map(e -> (Worker) e).
+                filter(e -> (e.seniorityLongerThanYears(2) && e.seniorityLessThanYears(4) && e.olderThanYears(age))).
+                collect(Collectors.toList());
     }
 
 }

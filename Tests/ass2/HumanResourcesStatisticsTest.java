@@ -67,13 +67,13 @@ public class HumanResourcesStatisticsTest {
         List<Employee> manager4Sub = new ArrayList<>();
 
         manager1 = new Manager("Eon", "Kill", LocalDate.of(1984, 2, 20),
-                new BigDecimal(5000), director, LocalDate.of(2016, 4, 2),
+                new BigDecimal(5000), director, LocalDate.of(1998, 4, 2),
                 new BigDecimal(500), manager1Sub);
         directorSubs.add(manager1);
         allEmployees.add(manager1);
 
         manager2 = new Manager("Goooki", "Pastor", LocalDate.of(1984, 2, 20),
-                new BigDecimal(5000), director, LocalDate.of(2016, 4, 2),
+                new BigDecimal(5000), director, LocalDate.of(1999, 4, 2),
                 new BigDecimal(500), manager2Sub);
         directorSubs.add(manager2);
         allEmployees.add(manager2);
@@ -215,7 +215,7 @@ public class HumanResourcesStatisticsTest {
 
     @Test
     public void longestSeniority() {
-        Assert.assertEquals(director.worksDays(),
+        Assert.assertEquals(manager1.worksDays(),
                 ((Worker) HumanResourcesStatistics.longestSeniority(allEmployees)).worksDays());
         Assert.assertNull(HumanResourcesStatistics.longestSeniority(Collections.emptyList()));
         Assert.assertNull(HumanResourcesStatistics.longestSeniority(allEmployees.stream().
@@ -265,4 +265,15 @@ public class HumanResourcesStatisticsTest {
     public void seniorityBetweenOneAndThreeYears() {
         Assert.assertEquals(3, HumanResourcesStatistics.seniorityBetweenOneAndThreeYears(allEmployees).size());
     }
+
+    @Test
+    public void seniorityLongerThanAndSmallerSalary() {
+        Assert.assertEquals(2, HumanResourcesStatistics.seniorityLongerThanAndSmallerSalary(allEmployees, director).size());
+    }
+
+    @Test
+    public void seniorityBetweenTwoAndFourYearsAndAgeGreaterThan() {
+        Assert.assertEquals(1, HumanResourcesStatistics.seniorityBetweenTwoAndFourYearsAndAgeGreaterThan(allEmployees, 50).size());
+    }
+
 }

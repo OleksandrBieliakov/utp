@@ -64,4 +64,8 @@ public abstract class Person {
         return birthDate.compareTo(other.birthDate) * (-1);
     }
 
+    public boolean olderThanYears(int years) {
+        return birthDate.compareTo(LocalDate.now().minusYears(years)) < 0;
+    }
+
 }
