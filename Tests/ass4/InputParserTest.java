@@ -19,8 +19,8 @@ public final class InputParserTest {
     private static final LocalDate PERSON_2_BIRTH_DATE = LocalDate.of(2003, 11, 8);
     private static final Person PERSON_2 = new Person(PERSON_2_NAME, PERSON_2_SURNAME, PERSON_2_BIRTH_DATE);
 
-    private static final File FILE = new File("data/ass4Data");
-    private static final File FILE_NOT_EXISTING = new File("data/ass4DataNotExisting");
+    private static final File FILE = new File("data/ass4/inputParserTestData");
+    private static final File FILE_NOT_EXISTING = new File("data/ass4/inputParserTestDataNotExisting");
 
     @Test
     public void parsePerson() {
