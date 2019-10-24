@@ -4,12 +4,11 @@ import ass4.Person;
 
 import java.util.Comparator;
 
-public final class BirthdateComparator implements Comparator<Person> {
+public class SurnameComparator implements Comparator<Person> {
 
     @Override
     public int compare(Person person1, Person person2) {
-        // TODO Auto-generated method stub
-        return 0;
+        return person1.surname().compareTo(person2.surname());
     }
 
 }

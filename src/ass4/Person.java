@@ -14,15 +14,15 @@ public class Person implements Comparable<Person> {
         this.birthDate = birthDate;
     }
 
-    String firstName() {
+    public String firstName() {
         return firstName;
     }
 
-    String surname() {
+    public String surname() {
         return surname;
     }
 
-    LocalDate birthDate() {
+    public LocalDate birthDate() {
         return birthDate;
     }
 
