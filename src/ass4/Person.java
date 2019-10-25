@@ -28,10 +28,17 @@ public class Person implements Comparable<Person> {
 
     @Override
     public int compareTo(Person otherPerson) {
-        int result;
-        if ((result = firstName.compareTo(otherPerson.firstName)) != 0) return result;
-        if ((result = surname.compareTo(otherPerson.surname)) != 0) return result;
-        return birthDate.compareTo(otherPerson.birthDate);
+        int result = surname.compareTo(otherPerson.surname);
+        if (result != 0) return result;
+        result = firstName.compareTo(otherPerson.firstName);
+        if (result != 0) return result;
+        result = birthDate.compareTo(otherPerson.birthDate);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + surname + " " + birthDate.getYear() + "-" + birthDate.getMonthValue() + "-" + birthDate.getDayOfMonth();
     }
 
 }
