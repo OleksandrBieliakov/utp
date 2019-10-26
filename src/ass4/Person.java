@@ -1,6 +1,7 @@
 package ass4;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Person implements Comparable<Person> {
 
@@ -38,7 +39,7 @@ public class Person implements Comparable<Person> {
 
     @Override
     public String toString() {
-        return firstName + " " + surname + " " + birthDate.getYear() + "-" + birthDate.getMonthValue() + "-" + birthDate.getDayOfMonth();
+        return firstName + " " + surname + " " + birthDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
 }
