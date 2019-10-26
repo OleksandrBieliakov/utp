@@ -8,11 +8,11 @@ import java.util.*;
 
 final class PersonDatabase {
 
-    private List<Person> notSorted;
-    private List<Person> sortedByFirstName;
-    private List<Person> sortedBySurnameFirstNameAndBirthDate; // Natural order
-    private List<Person> sortedByBirthDate;
-    private Map<LocalDate, List<Person>> mappedByDate;
+    private List<Person> notSorted = new ArrayList<>();
+    private List<Person> sortedByFirstName = new ArrayList<>();
+    private List<Person> sortedBySurnameFirstNameAndBirthDate = new ArrayList<>(); // Natural order
+    private List<Person> sortedByBirthDate = new ArrayList<>();
+    private Map<LocalDate, List<Person>> mappedByDate = new HashMap<>();
 
     PersonDatabase() {
     }
@@ -27,24 +27,22 @@ final class PersonDatabase {
 
     void add(Person person) {
         if (person == null) return;
-        List<Person> personHolder = new ArrayList<>();
-        personHolder.add(person);
-        addAll(personHolder);
+        addToAll(person);
+        sortAll();
     }
 
     void addAll(List<Person> people) {
-        if (people == null || people.size() == 0) return;
-        if (notSorted == null) initializeAll();
+        if (people == null || people.isEmpty()) return;
         addToAll(people);
         sortAll();
     }
 
-    private void initializeAll() {
-        notSorted = new ArrayList<>();
-        sortedByFirstName = new ArrayList<>();
-        sortedBySurnameFirstNameAndBirthDate = new ArrayList<>();
-        sortedByBirthDate = new ArrayList<>();
-        mappedByDate = new HashMap<>();
+    private void addToAll(Person person) {
+        notSorted.add(person);
+        sortedByFirstName.add(person);
+        sortedBySurnameFirstNameAndBirthDate.add(person);
+        sortedByBirthDate.add(person);
+        addToMap(person);
     }
 
     private void addToAll(List<Person> people) {
@@ -55,12 +53,14 @@ final class PersonDatabase {
         addToMap(people);
     }
 
+    private void addToMap(Person person) {
+        LocalDate date = person.birthDate();
+        List<Person> bucket = mappedByDate.computeIfAbsent(date, k -> new ArrayList<>());
+        bucket.add(person);
+    }
+
     private void addToMap(List<Person> people) {
-        people.forEach(person -> {
-            LocalDate date = person.birthDate();
-            List<Person> bucket = mappedByDate.computeIfAbsent(date, k -> new ArrayList<>());
-            bucket.add(person);
-        });
+        people.forEach(this::addToMap);
     }
 
     private void sortAll() {
@@ -70,7 +70,6 @@ final class PersonDatabase {
     }
 
     int size() {
-        if (notSorted == null) return 0;
         return notSorted.size();
     }
 
