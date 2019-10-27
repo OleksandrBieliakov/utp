@@ -12,12 +12,10 @@ public final class InputParserTest {
     private static final String PERSON_1_LINE = "Rachel Green 1967-05-06";
     private static final String PERSON_1_NAME = "Rachel", PERSON_1_SURNAME = "Green";
     private static final LocalDate PERSON_1_BIRTH_DATE = LocalDate.of(1967, 5, 6);
-    private static final Person PERSON_1 = new Person(PERSON_1_NAME, PERSON_1_SURNAME, PERSON_1_BIRTH_DATE);
 
     private static final String PERSON_2_LINE = "Chandler    Bing        2003-11-08";
     private static final String PERSON_2_NAME = "Chandler", PERSON_2_SURNAME = "Bing";
     private static final LocalDate PERSON_2_BIRTH_DATE = LocalDate.of(2003, 11, 8);
-    private static final Person PERSON_2 = new Person(PERSON_2_NAME, PERSON_2_SURNAME, PERSON_2_BIRTH_DATE);
 
     private static final File FILE = new File("data/ass4/inputParserTestData");
     private static final File FILE_NOT_EXISTING = new File("data/ass4/inputParserTestDataNotExisting");

@@ -43,7 +43,7 @@ final class InputParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(people.size() == 0) return null;
+        if(people.isEmpty()) return null;
         return people;
     }
 
