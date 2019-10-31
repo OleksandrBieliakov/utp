@@ -54,8 +54,7 @@ final class PersonDatabase {
     }
 
     private void addToMap(Person person) {
-        LocalDate date = person.birthDate();
-        List<Person> bucket = mappedByDate.computeIfAbsent(date, k -> new ArrayList<>());
+        List<Person> bucket = mappedByDate.computeIfAbsent(person.birthDate(), k -> new ArrayList<>());
         bucket.add(person);
     }
 
