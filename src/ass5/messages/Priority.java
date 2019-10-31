@@ -3,9 +3,9 @@ package ass5.messages;
 import java.util.Random;
 
 public enum Priority {
-    LOW,
+    HIGH,
     NORMAL,
-    HIGH;
+    LOW;
 
     public static Priority generatePriority() {
         Priority[] priorities = Priority.values();

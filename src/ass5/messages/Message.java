@@ -30,7 +30,7 @@ public class Message implements Comparable<Message> {
 
     @Override
     public int compareTo(Message other) {
-        int result = priority.compareTo(other.priority) * (-1);
+        int result = priority.compareTo(other.priority);
         if (result == 0) result = timeCreated.compareTo(other.timeCreated);
         return result;
     }
