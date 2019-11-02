@@ -7,15 +7,15 @@ import ass6.people.PersonComparatorByLocale;
 import java.text.Collator;
 import java.util.*;
 
-abstract public class PeopleGroup implements Comparable<PeopleGroup> {
+abstract public class PeopleGroup<T extends Person> implements Comparable<PeopleGroup> {
 
     private static final Collator PL_COLLATOR = Collator.getInstance(Locale.forLanguageTag("pl-PL"));
 
     private String name;
-    private Set<Person> people;
-    private Map<Nationality, Set<Person>> peopleByNationality = new HashMap<>();
+    private Set<T> people;
+    private Map<Nationality, Set<T>> peopleByNationality = new HashMap<>();
 
-    public PeopleGroup(String name, Collection<Person> people) {
+    public PeopleGroup(String name, Collection<T> people) {
         this.name = name;
         this.people = new TreeSet<>(people);
         addToMap(people);
@@ -29,21 +29,21 @@ abstract public class PeopleGroup implements Comparable<PeopleGroup> {
         this.name = name;
     }
 
-    public Set<Person> getPeople() {
+    public Set<T> getPeople() {
         return people;
     }
 
-    private void addToMap(Person person) {
-        Set<Person> bucket = peopleByNationality.computeIfAbsent(person.getNationality(), k ->
+    private void addToMap(T person) {
+        Set<T> bucket = peopleByNationality.computeIfAbsent(person.getNationality(), k ->
                 new TreeSet<>(new PersonComparatorByLocale(person.getNationality().getLocale())));
         bucket.add(person);
     }
 
-    private void addToMap(Collection<Person> people) {
+    private void addToMap(Collection<T> people) {
         people.forEach(this::addToMap);
     }
 
-    public Set<Person> getPeopleOfNationality(Nationality nationality) {
+    public Set<T> getPeopleOfNationality(Nationality nationality) {
         return peopleByNationality.get(nationality);
     }
 

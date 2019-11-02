@@ -1,6 +1,6 @@
 package ass6.groups;
 
-import ass6.people.Person;
+import ass6.people.Student;
 import ass6.people.Teacher;
 
 import java.util.Collection;
@@ -11,7 +11,7 @@ public class Subject extends PeopleGroup {
     private Department department;
     private Teacher lecturer;
 
-    public Subject(String name, Department department, Teacher lecturer, Collection<Person> students) {
+    public Subject(String name, Department department, Teacher lecturer, Collection<Student> students) {
         super(name, students);
         this.department = department;
         this.lecturer = lecturer;
