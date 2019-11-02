@@ -8,7 +8,7 @@ public class Teacher extends Person {
     private final LocalDate hireDate;
     private Degree degree;
 
-    public Teacher(int PESEL, String name, String surname, LocalDate birthDate, Nationality nationality, LocalDate hireDate, Degree degree) {
+    public Teacher(String PESEL, String name, String surname, LocalDate birthDate, Nationality nationality, LocalDate hireDate, Degree degree) {
         super(PESEL, name, surname, birthDate, nationality);
         this.hireDate = hireDate;
         this.degree = degree;

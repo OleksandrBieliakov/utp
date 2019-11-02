@@ -9,7 +9,7 @@ public class Student extends Person {
 
     private final int studentID;
 
-    public Student(int PESEL, String name, String surname, LocalDate birthDate, Nationality nationality) {
+    public Student(String PESEL, String name, String surname, LocalDate birthDate, Nationality nationality) {
         super(PESEL, name, surname, birthDate, nationality);
         studentID = nextID++;
     }

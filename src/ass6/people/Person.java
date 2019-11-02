@@ -8,13 +8,13 @@ abstract public class Person implements Comparable<Person> {
 
     private static final PersonComparatorByLocale PL_COMPARATOR = new PersonComparatorByLocale(Locale.forLanguageTag("pl-PL"));
 
-    private final int PESEL;
+    private final String PESEL;
     private final String name;
     private final String surname;
     private final LocalDate birthDate;
     private final Nationality nationality;
 
-    public Person(int PESEL, String name, String surname, LocalDate birthDate, Nationality nationality) {
+    public Person(String PESEL, String name, String surname, LocalDate birthDate, Nationality nationality) {
         this.PESEL = PESEL;
         this.name = name;
         this.surname = surname;
@@ -22,7 +22,7 @@ abstract public class Person implements Comparable<Person> {
         this.nationality = nationality;
     }
 
-    public int getPESEL() {
+    public String getPESEL() {
         return PESEL;
     }
 
@@ -47,7 +47,7 @@ abstract public class Person implements Comparable<Person> {
         if (this == o) return true;
         if (!(o instanceof Person)) return false;
         Person person = (Person) o;
-        return getPESEL() == person.getPESEL() &&
+        return Objects.equals(getPESEL(), person.getPESEL()) &&
                 Objects.equals(getName(), person.getName()) &&
                 Objects.equals(getSurname(), person.getSurname()) &&
                 Objects.equals(getBirthDate(), person.getBirthDate()) &&
@@ -67,7 +67,7 @@ abstract public class Person implements Comparable<Person> {
         if (result != 0) return result;
         result = nationality.toString().compareTo(other.nationality.toString());
         if (result != 0) return result;
-        return PESEL - other.PESEL;
+        return PESEL.compareTo(other.PESEL);
     }
 
     @Override

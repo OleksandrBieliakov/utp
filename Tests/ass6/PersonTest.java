@@ -15,9 +15,9 @@ public class PersonTest {
 
     @Test
     public void comparableTest() {
-        Student student1 = new Student(1, "1", "A", LocalDate.of(2000, 1, 1), Nationality.POLISH);
-        Student student2 = new Student(1, "1", "A", LocalDate.of(2000, 1, 1), Nationality.POLISH);
-        Student student3 = new Student(1, "1", "A", LocalDate.of(2000, 1, 1), Nationality.POLISH);
+        Student student1 = new Student("1", "1", "A", LocalDate.of(2000, 1, 1), Nationality.POLISH);
+        Student student2 = new Student("1", "1", "A", LocalDate.of(2000, 1, 1), Nationality.POLISH);
+        Student student3 = new Student("1", "1", "A", LocalDate.of(2000, 1, 1), Nationality.POLISH);
         List<Student> studentsList = new ArrayList<>(Arrays.asList(student2, student3, student1, student3));
         StudentsGroup group = new StudentsGroup("gr1", studentsList);
         System.out.println(group);
