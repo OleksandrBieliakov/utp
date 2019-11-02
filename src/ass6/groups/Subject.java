@@ -6,7 +6,7 @@ import ass6.people.Teacher;
 import java.util.Collection;
 import java.util.Objects;
 
-public class Subject extends PeopleGroup {
+public class Subject extends PeopleGroup<Student> {
 
     private Department department;
     private Teacher lecturer;

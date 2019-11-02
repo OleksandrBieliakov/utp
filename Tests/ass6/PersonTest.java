@@ -2,7 +2,6 @@ package ass6;
 
 import ass6.groups.StudentsGroup;
 import ass6.people.Nationality;
-import ass6.people.Person;
 import ass6.people.Student;
 import org.junit.Assert;
 import org.junit.Test;
