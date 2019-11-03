@@ -50,6 +50,10 @@ public class Generator {
     private Set<Student> students = new HashSet<>();
     private Set<Teacher> teachers = new HashSet<>();
 
+    public Generator() {
+        generateAll();
+    }
+
     public static String generatePESEL() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 11; ++i)
