@@ -57,5 +57,11 @@ public class Subject extends PeopleGroup<Student> {
         return lecturer.compareTo(((Subject) other).lecturer);
     }
 
+    @Override
+    public String toString() {
+        return getName() + ", department " + department.getName() + ", lecturer" +
+                lecturer.getName() + " " + lecturer.getSurname() + "\n" + getPeople().toString();
+    }
+
 }
 

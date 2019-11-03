@@ -10,4 +10,7 @@ public class Departments extends PeopleGroups<Department> {
         super(departments);
     }
 
+    public Departments() {
+    }
+
 }

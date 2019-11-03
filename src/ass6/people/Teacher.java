@@ -50,4 +50,9 @@ public class Teacher extends Person {
         return hireDate.compareTo(((Teacher) other).hireDate);
     }
 
+    @Override
+    public String toString() {
+        return "TEACHER: " + super.toString() + " " + degree + " hireDate:" + hireDate;
+    }
+
 }

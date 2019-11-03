@@ -15,6 +15,9 @@ abstract public class PeopleGroups<T extends PeopleGroup> implements Comparable<
         addAll(peopleGroups);
     }
 
+    public PeopleGroups() {
+    }
+
     public Map<String, T> getPeopleGroups() {
         return peopleGroups;
     }
@@ -29,6 +32,10 @@ abstract public class PeopleGroups<T extends PeopleGroup> implements Comparable<
 
     public T get(String name) {
         return peopleGroups.get(name);
+    }
+
+    public int size() {
+        return peopleGroups.size();
     }
 
     @Override

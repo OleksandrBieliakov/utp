@@ -10,4 +10,7 @@ public class Subjects extends PeopleGroups<Subject> {
         super(peopleGroups);
     }
 
+    public Subjects() {
+    }
+
 }

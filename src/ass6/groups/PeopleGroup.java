@@ -47,6 +47,10 @@ abstract public class PeopleGroup<T extends Person> implements Comparable<People
         return peopleByNationality.get(nationality);
     }
 
+    public int size() {
+        return people.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
