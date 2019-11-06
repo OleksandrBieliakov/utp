@@ -14,10 +14,14 @@ abstract public class Message implements Comparable<Message> {
     private Priority priority;
 
     Message(Requester requester, Priority priority) {
-        messageID = nextID++;
+        messageID = getNextId();
         timeCreated = LocalDateTime.now();
         this.requester = requester;
         this.priority = priority;
+    }
+
+    private synchronized int getNextId() {
+        return nextID++;
     }
 
     public Requester getRequester() {
