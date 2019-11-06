@@ -4,7 +4,7 @@ import ass5.participants.Requester;
 
 import java.time.LocalDateTime;
 
-public class Message implements Comparable<Message> {
+abstract public class Message implements Comparable<Message> {
 
     private static int nextID = 0;
 
