@@ -52,7 +52,7 @@ public class Teacher extends Person {
 
     @Override
     public String toString() {
-        return "TEACHER: " + super.toString() + " " + degree + " hireDate:" + hireDate;
+        return super.toString() + ", degree - " + degree + ", hire date - " + hireDate;
     }
 
 }

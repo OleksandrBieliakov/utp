@@ -6,24 +6,25 @@ import java.util.Objects;
 
 abstract public class Person implements Comparable<Person> {
 
-    private static final PersonComparatorByLocale PL_COMPARATOR = new PersonComparatorByLocale(Locale.forLanguageTag("pl-PL"));
+    private static final Locale PL_LOCALE = Locale.forLanguageTag("pl-PL");
+    private static final PersonComparatorByLocale DEFAULT_COMPARATOR = new PersonComparatorByLocale(PL_LOCALE);
 
-    private final String PESEL;
+    private final String pesel;
     private final String name;
     private final String surname;
     private final LocalDate birthDate;
     private final Nationality nationality;
 
-    public Person(String PESEL, String name, String surname, LocalDate birthDate, Nationality nationality) {
-        this.PESEL = PESEL;
+    public Person(String pesel, String name, String surname, LocalDate birthDate, Nationality nationality) {
+        this.pesel = pesel;
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
         this.nationality = nationality;
     }
 
-    public String getPESEL() {
-        return PESEL;
+    public String getPesel() {
+        return pesel;
     }
 
     public String getName() {
@@ -42,12 +43,16 @@ abstract public class Person implements Comparable<Person> {
         return nationality;
     }
 
+    public static PersonComparatorByLocale getDefaultComparator() {
+        return DEFAULT_COMPARATOR;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Person)) return false;
         Person person = (Person) o;
-        return Objects.equals(getPESEL(), person.getPESEL()) &&
+        return Objects.equals(getPesel(), person.getPesel()) &&
                 Objects.equals(getName(), person.getName()) &&
                 Objects.equals(getSurname(), person.getSurname()) &&
                 Objects.equals(getBirthDate(), person.getBirthDate()) &&
@@ -56,23 +61,27 @@ abstract public class Person implements Comparable<Person> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPESEL(), getName(), getSurname(), getBirthDate(), getNationality());
+        return Objects.hash(getPesel(), getName(), getSurname(), getBirthDate(), getNationality());
     }
 
     @Override
     public int compareTo(Person other) {
-        int result = PL_COMPARATOR.compare(this, other);
+        int result = DEFAULT_COMPARATOR.compare(this, other);
         if (result != 0) return result;
         result = birthDate.compareTo(other.birthDate);
         if (result != 0) return result;
         result = nationality.toString().compareTo(other.nationality.toString());
         if (result != 0) return result;
-        return PESEL.compareTo(other.PESEL);
+        return pesel.compareTo(other.pesel);
     }
 
     @Override
     public String toString() {
-        return "PESEL:" + PESEL + " " + name + " " + surname + " " + nationality + " " + birthDate;
+        return "PESEL - " + pesel +
+                ", " + name +
+                " " + surname +
+                ", birth date - " + birthDate +
+                ", " + nationality;
     }
 
 }

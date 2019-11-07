@@ -9,7 +9,8 @@ import java.util.*;
 
 abstract public class PeopleGroup<T extends Person> implements Comparable<PeopleGroup> {
 
-    private static final Collator PL_COLLATOR = Collator.getInstance(Locale.forLanguageTag("pl-PL"));
+    private static final Locale PL_LOCALE = Locale.forLanguageTag("pl-PL");
+    private static final Collator PL_COLLATOR = Collator.getInstance(PL_LOCALE);
 
     private String name;
     private Set<T> people;

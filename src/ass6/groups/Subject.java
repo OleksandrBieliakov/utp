@@ -11,7 +11,7 @@ public class Subject extends PeopleGroup<Student> {
     private Department department;
     private Teacher lecturer;
 
-    public Subject(String name, Department department, Teacher lecturer, Collection<Student> students) {
+    public Subject(String name, Collection<Student> students, Department department, Teacher lecturer) {
         super(name, students);
         this.department = department;
         this.lecturer = lecturer;
@@ -59,8 +59,8 @@ public class Subject extends PeopleGroup<Student> {
 
     @Override
     public String toString() {
-        return getName() + ", department " + department.getName() + ", lecturer" +
-                lecturer.getName() + " " + lecturer.getSurname() + "\n" + getPeople().toString();
+        return getName() + ", department - " + department.getName() + ", lecturer - " +
+                lecturer.getName() + " " + lecturer.getSurname() + ":\n" + getPeople().toString();
     }
 
 }

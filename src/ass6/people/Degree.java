@@ -1,7 +1,5 @@
 package ass6.people;
 
-import java.util.Random;
-
 public enum Degree {
 
     PROFESSOR,
@@ -10,11 +8,6 @@ public enum Degree {
     MASTER_ENGINEER,
     MASTER,
     ENGINEER,
-    BACHELOR;
-
-    public static Degree generateDegree() {
-        Degree[] degrees = Degree.values();
-        return degrees[new Random().nextInt(degrees.length)];
-    }
+    BACHELOR
 
 }

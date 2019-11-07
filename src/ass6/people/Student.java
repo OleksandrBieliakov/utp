@@ -5,16 +5,14 @@ import java.util.Objects;
 
 public class Student extends Person {
 
-    private static int nextID = 0;
+    private final String studentID;
 
-    private final int studentID;
-
-    public Student(String PESEL, String name, String surname, LocalDate birthDate, Nationality nationality) {
+    public Student(String PESEL, String name, String surname, LocalDate birthDate, Nationality nationality, String studentID) {
         super(PESEL, name, surname, birthDate, nationality);
-        studentID = nextID++;
+        this.studentID = studentID;
     }
 
-    public int getStudentID() {
+    public String getStudentID() {
         return studentID;
     }
 
@@ -24,7 +22,7 @@ public class Student extends Person {
         if (!(o instanceof Student)) return false;
         if (!super.equals(o)) return false;
         Student student = (Student) o;
-        return getStudentID() == student.getStudentID();
+        return getStudentID().equals(student.getStudentID());
     }
 
     @Override
@@ -33,15 +31,15 @@ public class Student extends Person {
     }
 
     @Override
-    public int compareTo(Person person) {
-        int result = super.compareTo(person);
-        if (result != 0 || !(person instanceof Student)) return result;
-        return studentID - ((Student) person).studentID;
+    public int compareTo(Person other) {
+        int result = super.compareTo(other);
+        if (result != 0 || !(other instanceof Student)) return result;
+        return studentID.compareTo(((Student) other).studentID);
     }
 
     @Override
     public String toString() {
-        return "STUDENT: " + super.toString() + " studentID:" + studentID;
+        return super.toString() + ", student ID - " + studentID;
     }
 
 }

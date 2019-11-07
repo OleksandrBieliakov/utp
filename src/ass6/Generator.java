@@ -3,13 +3,7 @@ package ass6;
 import ass6.groups.Department;
 import ass6.groups.StudentsGroup;
 import ass6.groups.Subject;
-import ass6.groupscollections.Departments;
-import ass6.groupscollections.StudentsGroups;
-import ass6.groupscollections.Subjects;
-import ass6.people.Degree;
-import ass6.people.Nationality;
-import ass6.people.Student;
-import ass6.people.Teacher;
+import ass6.people.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -19,18 +13,17 @@ public class Generator {
     private static final int STUDENTS_NUMBER = 100;
     private static final int GROUPS_NUMBER = 12;
     private static final int GROUP_SIZE = STUDENTS_NUMBER / GROUPS_NUMBER;
-    private static final int EXTRA_STUDENTS = STUDENTS_NUMBER - GROUPS_NUMBER * GROUP_SIZE;
+    private static final int EXTRA_STUDENTS = STUDENTS_NUMBER % GROUPS_NUMBER;
 
     private static final int DEPARTMENTS_NUMBER = 3;
     private static final int TEACHER_NUMBER = 10;
     private static final int DEPARTMENT_SIZE = TEACHER_NUMBER / DEPARTMENTS_NUMBER;
-    private static final int EXTRA_TEACHERS = TEACHER_NUMBER - DEPARTMENTS_NUMBER * DEPARTMENT_SIZE;
+    private static final int EXTRA_TEACHERS = TEACHER_NUMBER % DEPARTMENTS_NUMBER;
 
     private static final int SUBJECTS_NUMBER = 10;
     private static final int STUDENTS_PER_SUBJECT = STUDENTS_NUMBER / SUBJECTS_NUMBER;
-    private static final int EXTRA_SUBJECT_STUDENTS = STUDENTS_NUMBER - SUBJECTS_NUMBER * STUDENTS_PER_SUBJECT;
+    private static final int EXTRA_SUBJECT_STUDENTS = STUDENTS_NUMBER % SUBJECTS_NUMBER;
 
-    private static final Random random = new Random();
     private static final String[] names =
             {"ANTONI", "JAKUB", "JAN", "SZYMON", "ALEKSANDER", "FRANCISZEK", "FILIP", "WOJCIECH", "MIKOŁAJ", "KACPER",
                     "ADAM", "STANISŁAW", "MARCEL", "MICHAŁ", "MIŁOSZ", "PAWEŁ", "BARTŁOMIEJ", "WIKTOR", "TYMON", "IGOR"};
@@ -39,14 +32,13 @@ public class Generator {
                     "Woźniak", "Dąbrowski", "Kozłowski", "Jankowski", "Mazur", "Wojciechowski", "Kwiatkowski", "Krawczyk",
                     "Kaczmarek", "Piotrowski", "Grabowski"};
 
-    private Departments departments = new Departments();
-    private StudentsGroups groups = new StudentsGroups();
-    private Subjects subjects = new Subjects();
+    private static final Random random = new Random();
 
-    private Set<StudentsGroup> groupsSet = new HashSet<>();
-    private Set<Department> departmentsSet = new HashSet<>();
-    private Set<Subject> subjectsSet = new HashSet<>();
+    private Set<StudentsGroup> studentsGroups = new HashSet<>();
+    private Set<Department> departments = new HashSet<>();
+    private Set<Subject> subjects = new HashSet<>();
 
+    private Set<Person> people = new HashSet<>();
     private Set<Student> students = new HashSet<>();
     private Set<Teacher> teachers = new HashSet<>();
 
@@ -54,6 +46,7 @@ public class Generator {
         generateAll();
     }
 
+    //TODO
     public static String generatePESEL() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 11; ++i)
@@ -69,38 +62,63 @@ public class Generator {
         return surnames[random.nextInt(surnames.length)];
     }
 
+    //TODO
     public static LocalDate generateBirthDate() {
         return LocalDate.of(1990 + random.nextInt(10), random.nextInt(12), random.nextInt(30));
     }
 
+    public static Nationality generateNationality() {
+        Nationality[] nationalities = Nationality.values();
+        return nationalities[new Random().nextInt(nationalities.length)];
+    }
+
+    //TODO
+    public static String generateStudentID() {
+        return "";
+    }
+
+    public static Degree generateDegree() {
+        Degree[] degrees = Degree.values();
+        return degrees[new Random().nextInt(degrees.length)];
+    }
+
+    //TODO
     public static LocalDate generateHireDate() {
         return LocalDate.of(2014 + random.nextInt(5), random.nextInt(12), random.nextInt(30));
     }
 
     public static Student generateStudent() {
-        return new Student(generatePESEL(), generateName(), generateSurname(), generateBirthDate(), Nationality.generateNationality());
+        return new Student(generatePESEL(), generateName(), generateSurname(), generateBirthDate(), generateNationality(), generateStudentID());
     }
 
     public static Teacher generateTeacher() {
         return new Teacher(generatePESEL(), generateName(), generateSurname(), generateBirthDate(),
-                Nationality.generateNationality(), generateHireDate(), Degree.generateDegree());
+                generateNationality(), generateHireDate(), generateDegree());
     }
 
     private void generateStudents() {
-        while (students.size() < STUDENTS_NUMBER)
-            students.add(generateStudent());
+        Student student;
+        while (students.size() < STUDENTS_NUMBER) {
+            student = generateStudent();
+            students.add(student);
+            people.add(student);
+        }
     }
 
     private void generateTeachers() {
-        while (teachers.size() < TEACHER_NUMBER)
-            teachers.add(generateTeacher());
+        Teacher teacher;
+        while (teachers.size() < TEACHER_NUMBER) {
+            teacher = generateTeacher();
+            teachers.add(teacher);
+            people.add(teacher);
+        }
     }
 
     private void fillStudentGroups() {
         Iterator<Student> iterator = students.iterator();
         int extraStudents = EXTRA_STUDENTS;
         int groupsCount = 1;
-        while (groups.size() < GROUPS_NUMBER) {
+        while (studentsGroups.size() < GROUPS_NUMBER) {
             Set<Student> students = new HashSet<>();
             while (students.size() < GROUP_SIZE && iterator.hasNext()) {
                 students.add(iterator.next());
@@ -110,8 +128,7 @@ public class Generator {
                 extraStudents--;
             }
             StudentsGroup group = new StudentsGroup("Group" + groupsCount++, students);
-            groups.add(group);
-            groupsSet.add(group);
+            studentsGroups.add(group);
         }
     }
 
@@ -130,14 +147,13 @@ public class Generator {
             }
             Department department = new Department("Department" + departmentsCount++, teachers);
             departments.add(department);
-            departmentsSet.add(department);
         }
     }
 
     private void fillSubjects() {
         Iterator<Student> iteratorStudents = students.iterator();
         Iterator<Teacher> iteratorTeachers = teachers.iterator();
-        Iterator<Department> iteratorDepartments = departmentsSet.iterator();
+        Iterator<Department> iteratorDepartments = departments.iterator();
         int extraStudents = EXTRA_SUBJECT_STUDENTS;
         int subjectCount = 1;
         while (subjects.size() < SUBJECTS_NUMBER) {
@@ -153,11 +169,10 @@ public class Generator {
             }
             if (!iteratorTeachers.hasNext()) iteratorTeachers = teachers.iterator();
             teacher = iteratorTeachers.next();
-            if (!iteratorDepartments.hasNext()) iteratorDepartments = departmentsSet.iterator();
+            if (!iteratorDepartments.hasNext()) iteratorDepartments = departments.iterator();
             department = iteratorDepartments.next();
-            Subject subject = new Subject("Subject" + subjectCount++, department, teacher, students);
+            Subject subject = new Subject("Subject" + subjectCount++, students, department, teacher);
             subjects.add(subject);
-            subjectsSet.add(subject);
         }
     }
 
@@ -169,28 +184,20 @@ public class Generator {
         fillSubjects();
     }
 
-    public Departments getDepartments() {
+    public Set<StudentsGroup> getStudentsGroups() {
+        return studentsGroups;
+    }
+
+    public Set<Department> getDepartments() {
         return departments;
     }
 
-    public StudentsGroups getGroups() {
-        return groups;
-    }
-
-    public Subjects getSubjects() {
+    public Set<Subject> getSubjects() {
         return subjects;
     }
 
-    public Set<StudentsGroup> getGroupsSet() {
-        return groupsSet;
-    }
-
-    public Set<Department> getDepartmentsSet() {
-        return departmentsSet;
-    }
-
-    public Set<Subject> getSubjectsSet() {
-        return subjectsSet;
+    public Set<Person> getPeople() {
+        return people;
     }
 
     public Set<Student> getStudents() {

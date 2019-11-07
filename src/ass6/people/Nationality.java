@@ -1,7 +1,6 @@
 package ass6.people;
 
 import java.util.Locale;
-import java.util.Random;
 
 public enum Nationality {
 
@@ -16,7 +15,7 @@ public enum Nationality {
     CHINESE(Locale.CHINA),
     VIETNAMESE(new Locale("vi-VN"));
 
-    private Locale locale;
+    private final Locale locale;
 
     Nationality(Locale locale) {
         this.locale = locale;
@@ -24,11 +23,6 @@ public enum Nationality {
 
     public Locale getLocale() {
         return locale;
-    }
-
-    public static Nationality generateNationality() {
-        Nationality[] nationalities = Nationality.values();
-        return nationalities[new Random().nextInt(nationalities.length)];
     }
 
 }
