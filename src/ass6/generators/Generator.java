@@ -17,9 +17,9 @@ public class Generator {
     private int extraStudents = STUDENTS_NUMBER % GROUPS_NUMBER;
 
     private static final int DEPARTMENTS_NUMBER = 3;
-    private static final int TEACHER_NUMBER = 10;
-    private static final int DEPARTMENT_SIZE = TEACHER_NUMBER / DEPARTMENTS_NUMBER;
-    private int extraTeachers = TEACHER_NUMBER % DEPARTMENTS_NUMBER;
+    private static final int TEACHERS_NUMBER = 10;
+    private static final int DEPARTMENT_SIZE = TEACHERS_NUMBER / DEPARTMENTS_NUMBER;
+    private int extraTeachers = TEACHERS_NUMBER % DEPARTMENTS_NUMBER;
 
     private static final int SUBJECTS_NUMBER = 10;
     private static final int STUDENTS_PER_SUBJECT = STUDENTS_NUMBER / SUBJECTS_NUMBER;
@@ -104,13 +104,13 @@ public class Generator {
     }
 
     public StudentsGroup generateStudentsGroup() {
-        StudentsGroup studentsGroup = new StudentsGroup("Group" + studentsGroups.size());
+        StudentsGroup studentsGroup = new StudentsGroup(String.format("Group %02d", studentsGroups.size() + 1));
         studentsGroups.add(studentsGroup);
         return studentsGroup;
     }
 
     public Department generateDepartment() {
-        Department department = new Department("Department" + departments.size());
+        Department department = new Department(String.format("Department %02d", departments.size() + 1));
         departments.add(department);
         return department;
     }
@@ -120,7 +120,7 @@ public class Generator {
         if (teachers.size() == 0) generateTeacher();
         if (!departmentsIterator.hasNext()) departmentsIterator = departments.iterator();
         if (!teachersIterator.hasNext()) teachersIterator = teachers.iterator();
-        Subject subject = new Subject("Subject" + subjects.size(), departmentsIterator.next(), teachersIterator.next());
+        Subject subject = new Subject(String.format("Subject %02d", subjects.size() + 1), departmentsIterator.next(), teachersIterator.next());
         subjects.add(subject);
         return subject;
     }
@@ -170,7 +170,7 @@ public class Generator {
 
     public void generateAll() {
         generateStudents(STUDENTS_NUMBER);
-        generateTeachers(TEACHER_NUMBER);
+        generateTeachers(TEACHERS_NUMBER);
         generateStudentsGroups(GROUPS_NUMBER);
         generateDepartments(DEPARTMENTS_NUMBER);
         generateSubjects(SUBJECTS_NUMBER);

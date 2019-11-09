@@ -90,7 +90,12 @@ abstract public class PeopleGroup<T extends Person> implements Comparable<People
 
     @Override
     public String toString() {
-        return name + ":\n" + people.toString();
+        StringBuilder sb = new StringBuilder();
+        people.forEach(e -> {
+            sb.append(e);
+            sb.append("\n");
+        });
+        return name + ":\n" + sb.toString();
     }
 
 }

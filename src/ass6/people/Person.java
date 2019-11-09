@@ -78,8 +78,8 @@ abstract public class Person implements Comparable<Person> {
     @Override
     public String toString() {
         return "PESEL - " + pesel +
-                ", " + name +
-                " " + surname +
+                ", " + surname.toUpperCase() +
+                " " + name.toUpperCase() +
                 ", birth date - " + birthDate +
                 ", " + nationality;
     }

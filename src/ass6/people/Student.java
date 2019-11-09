@@ -32,9 +32,10 @@ public class Student extends Person {
 
     @Override
     public int compareTo(Person other) {
-        int result = super.compareTo(other);
-        if (result != 0 || !(other instanceof Student)) return result;
-        return studentID.compareTo(((Student) other).studentID);
+        if (!(other instanceof Student)) return super.compareTo(other);
+        int result = studentID.compareTo(((Student) other).studentID);
+        if (result != 0) return result;
+        return super.compareTo(other);
     }
 
     @Override

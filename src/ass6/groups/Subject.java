@@ -65,8 +65,8 @@ public class Subject extends PeopleGroup<Student> {
 
     @Override
     public String toString() {
-        return getName() + ", department - " + department.getName() + ", lecturer - " +
-                lecturer.getName() + " " + lecturer.getSurname() + ":\n" + getPeople().toString();
+        return "Lecturer - " + lecturer.getName().toUpperCase() + " " + lecturer.getSurname().toUpperCase() +
+                ", department - " + department.getName() + ", " + super.toString();
     }
 
 }
