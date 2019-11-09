@@ -10,4 +10,8 @@ public class StudentsGroup extends PeopleGroup<Student> {
         super(name, students);
     }
 
+    public StudentsGroup(String name) {
+        super(name);
+    }
+
 }

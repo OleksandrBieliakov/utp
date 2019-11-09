@@ -17,6 +17,12 @@ public class Subject extends PeopleGroup<Student> {
         this.lecturer = lecturer;
     }
 
+    public Subject(String name, Department department, Teacher lecturer) {
+        super(name);
+        this.department = department;
+        this.lecturer = lecturer;
+    }
+
     public Department getDepartment() {
         return department;
     }

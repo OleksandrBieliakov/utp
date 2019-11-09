@@ -10,4 +10,8 @@ public class Department extends PeopleGroup<Teacher> {
         super(name, teachers);
     }
 
+    public Department(String name) {
+        super(name);
+    }
+
 }

@@ -13,13 +13,17 @@ abstract public class PeopleGroup<T extends Person> implements Comparable<People
     private static final Collator PL_COLLATOR = Collator.getInstance(PL_LOCALE);
 
     private String name;
-    private Set<T> people;
+    private Set<T> people = new TreeSet<>();
     private Map<Nationality, Set<T>> peopleByNationality = new HashMap<>();
 
     public PeopleGroup(String name, Collection<T> people) {
         this.name = name;
-        this.people = new TreeSet<>(people);
+        this.people.addAll(people);
         addToMap(people);
+    }
+
+    public PeopleGroup(String name) {
+        this.name = name;
     }
 
     public String getName() {
@@ -34,9 +38,20 @@ abstract public class PeopleGroup<T extends Person> implements Comparable<People
         return people;
     }
 
+    public void add(T person) {
+        people.add(person);
+        addToMap(person);
+    }
+
+    public void addAll(Collection<T> people) {
+        this.people.addAll(people);
+        addToMap(people);
+    }
+
     private void addToMap(T person) {
-        Set<T> bucket = peopleByNationality.computeIfAbsent(person.getNationality(), k ->
-                new TreeSet<>(new PersonComparatorByLocale(person.getNationality().getLocale())));
+        Nationality nationality = person.getNationality();
+        Set<T> bucket = peopleByNationality.computeIfAbsent(nationality, k ->
+                new TreeSet<>(new PersonComparatorByLocale(nationality.getLocale())));
         bucket.add(person);
     }
 
