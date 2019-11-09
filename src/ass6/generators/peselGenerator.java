@@ -24,7 +24,7 @@ public class peselGenerator {
 
     private static String birthDatePart(LocalDate birthDate) {
         int year = birthDate.getYear();
-        int month = birthDate.getMonthValue() + 1;
+        int month = birthDate.getMonthValue();
         int day = birthDate.getDayOfMonth();
         int century = year / YEARS_IN_CENTURY + 1;
         year = year % YEARS_IN_CENTURY;
@@ -52,7 +52,6 @@ public class peselGenerator {
         formatter.format(format, year);
         formatter.format(format, month);
         formatter.format(format, day);
-        System.out.println(sb.toString());
         return sb.toString();
     }
 

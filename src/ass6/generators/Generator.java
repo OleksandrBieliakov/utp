@@ -34,8 +34,8 @@ public class Generator {
 
     private static final int STUDENT_NUMBERS_RANGE = 100_000;
 
-    private static final int DAYS_IN_MONTH = 31;
-    private static final int MONTH_IN_YEAR = 12;
+    private static final int DAYS_IN_MONTH = 28;
+    private static final int MONTHS_IN_YEAR = 12;
 
 
     private static final Random RANDOM = new Random();
@@ -74,7 +74,7 @@ public class Generator {
     }
 
     public static LocalDate generateDate(int year) {
-        return LocalDate.of(year, RANDOM.nextInt(MONTH_IN_YEAR), RANDOM.nextInt(DAYS_IN_MONTH));
+        return LocalDate.of(year, RANDOM.nextInt(MONTHS_IN_YEAR) + 1, RANDOM.nextInt(DAYS_IN_MONTH) + 1);
     }
 
     public static String generateStudentID() {
