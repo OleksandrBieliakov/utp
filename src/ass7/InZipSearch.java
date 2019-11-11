@@ -7,12 +7,14 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class InZipSearch implements Search<ZipFile, ZipEntry> {
+public class InZipSearch implements Search<ZipFile, ZipEntry, ZipEntry> {
 
     @Override
     public List<ZipEntry> findByName(ZipFile archive, String name) {
         Predicate<ZipEntry> hasTheName = entry -> new File(entry.getName()).getName().equals(name);
-        return archive.stream().filter(hasTheName).collect(Collectors.toList());
+        return archive.stream().
+                filter(hasTheName).
+                collect(Collectors.toList());
     }
 
     @Override

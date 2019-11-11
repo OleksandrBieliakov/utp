@@ -8,14 +8,17 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class InDirectorySearch implements Search<Path, File> {
+public class InDirectorySearch implements Search<Path, File, Path> {
 
     @Override
     public List<File> findByName(Path path, String name) {
         Predicate<Path> hasTheName = p -> p.getFileName().toString().equals(name);
         List<File> entries = null;
         try {
-            entries = Files.walk(path).filter(hasTheName).map(p -> new File(p.toString())).collect(Collectors.toList());
+            entries = Files.walk(path).
+                    filter(hasTheName).
+                    map(p -> new File(p.toString())).
+                    collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,7 +27,26 @@ public class InDirectorySearch implements Search<Path, File> {
 
     @Override
     public List<File> findByContent(Path path, String content) {
-        return null;
+        Predicate<Path> isRegularFile = Files::isRegularFile;
+        Predicate<Path> notArchive = this::notArchive;
+        Predicate<Path> hasTheContent = p -> {
+            try {
+                return Files.lines(p).collect(Collectors.joining("\n")).equals(content);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        };
+        List<File> entries = null;
+        try {
+            entries = Files.walk(path).
+                    filter(isRegularFile.and(notArchive).and(hasTheContent)).
+                    map(p -> new File(p.toString())).
+                    collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return entries;
     }
 
 }

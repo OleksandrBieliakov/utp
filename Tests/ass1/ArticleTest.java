@@ -7,7 +7,7 @@ import org.junit.Test;
 public class ArticleTest {
 
     private static final String TITLE = "Interesting article";
-    private static final String TEXT = "Some text, more text, and more.";
+    private static final String TEXT = "Some text.txt, more text.txt, and more.";
 
     private Article article;
 
