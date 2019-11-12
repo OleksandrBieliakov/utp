@@ -1,11 +1,18 @@
 package ass7;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
 
 public class InJarSearch implements Search<JarFile, JarEntry, JarEntry> {
 
@@ -19,7 +26,19 @@ public class InJarSearch implements Search<JarFile, JarEntry, JarEntry> {
 
     @Override
     public List<JarEntry> findByContent(JarFile archive, String content) {
-        return null;
+        Predicate<JarEntry> isDirectory = ZipEntry::isDirectory;
+        Predicate<JarEntry> notArchive = this::notArchive;
+        Predicate<JarEntry> hasTheContent = entry -> {
+            try (InputStream in = new BufferedInputStream(archive.getInputStream(entry))) {
+                return Arrays.equals(in.readAllBytes(), content.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        };
+        return archive.stream().
+                filter(isDirectory.negate().and(notArchive).and(hasTheContent)).
+                collect(Collectors.toList());
     }
 
 }
