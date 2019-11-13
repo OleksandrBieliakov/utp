@@ -4,8 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
@@ -29,6 +27,7 @@ public class InJarSearch implements Search<JarFile, JarEntry, JarEntry> {
         Predicate<JarEntry> isDirectory = ZipEntry::isDirectory;
         Predicate<JarEntry> notArchive = this::notArchive;
         Predicate<JarEntry> hasTheContent = entry -> {
+            System.out.println(entry);
             try (InputStream in = new BufferedInputStream(archive.getInputStream(entry))) {
                 return Arrays.equals(in.readAllBytes(), content.getBytes());
             } catch (IOException e) {

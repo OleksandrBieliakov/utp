@@ -40,11 +40,16 @@ public class SearchTest {
 
     private static final Path DIRECTORY_2 = Path.of("data");
     private static final String CONTENT_1 = "some text\nsome text";
-    private static final String NAME_3 = "text.txt";
-    private static final String PATH_3 = "data\\ass7\\text.txt";
-    private static final File FILE_3 = new File(PATH_3);
-    private static final String NAME_3_ZIP = "utp-pointed/data/ass7/text.txt";
-    private static final String NAME_3_JAR = "data/ass7/text.txt";
+    private static final String NAME_3_1 = "text.txt";
+    private static final String NAME_3_2 = "text2.txt";
+    private static final String PATH_3_1 = "data\\ass7\\text.txt";
+    private static final String PATH_3_2 = "data\\ass7_2\\text2.txt";
+    private static final File FILE_3_1 = new File(PATH_3_1);
+    private static final File FILE_3_2 = new File(PATH_3_2);
+    private static final String NAME_3_1_ZIP = "utp-pointed/data/ass7/text.txt";
+    private static final String NAME_3_2_ZIP = "utp-pointed/data/ass7_2/text2.txt";
+    private static final String NAME_3_1_JAR = "data/ass7/text.txt";
+    private static final String NAME_3_2_JAR = "data/ass7_2/text2.txt";
 
 
     @Test
@@ -74,10 +79,13 @@ public class SearchTest {
         System.out.println("findByContentInDirectory():");
 
         List<File> entries = IN_DIRECTORY_SEARCH.findByContent(DIRECTORY_2, CONTENT_1);
-        Assert.assertEquals(1, entries.size());
-        Assert.assertEquals(FILE_3, entries.get(0));
-        Assert.assertEquals(NAME_3, entries.get(0).getName());
-        Assert.assertEquals(PATH_3, entries.get(0).getPath());
+        Assert.assertEquals(2, entries.size());
+        Assert.assertEquals(FILE_3_1, entries.get(0));
+        Assert.assertEquals(FILE_3_2, entries.get(1));
+        Assert.assertEquals(NAME_3_1, entries.get(0).getName());
+        Assert.assertEquals(NAME_3_2, entries.get(1).getName());
+        Assert.assertEquals(PATH_3_1, entries.get(0).getPath());
+        Assert.assertEquals(PATH_3_2, entries.get(1).getPath());
         System.out.println(entries);
     }
 
@@ -136,7 +144,21 @@ public class SearchTest {
 
     @Test
     public void findByContentInJar() {
+        JarFile zip = null;
+        try {
+            zip = new JarFile(JAR_PATH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Assert.assertNotNull(zip);
 
+        System.out.println("findByContentInJar():");
+
+        List<JarEntry> entries = IN_JAR_SEARCH.findByContent(zip, CONTENT_1);
+        Assert.assertEquals(2, entries.size());
+        Assert.assertEquals(NAME_3_1_JAR, entries.get(0).getName());
+        Assert.assertEquals(NAME_3_2_JAR, entries.get(1).getName());
+        System.out.println(entries + "\n");
     }
 
 

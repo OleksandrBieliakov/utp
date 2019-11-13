@@ -1,31 +1,26 @@
 package ass7;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class Test {
 
-    private static final InDirectorySearch IN_DIRECTORY_SEARCH = new InDirectorySearch();
-    private static final Path DIRECTORY_2 = Path.of("data");
     private static final String CONTENT_1 = "some text\nsome text";
-
+    private static final String JAR_PATH = "data\\ass7\\utp-pointed.jar";
+    private static final InJarSearch IN_JAR_SEARCH = new InJarSearch();
 
     public static void main (String[] args) {
 
-        List<File> entries = IN_DIRECTORY_SEARCH.findByContent(DIRECTORY_2, CONTENT_1);
-        System.out.println(entries);
-
-        String string = "";
+        JarFile zip = null;
         try {
-            string = Files.lines(Path.of("data/ass7/text.txt")).collect(Collectors.joining("\n"));
+            zip = new JarFile(JAR_PATH);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(string.equals(CONTENT_1));
+        List<JarEntry> entries = IN_JAR_SEARCH.findByContent(zip, CONTENT_1);
+        System.out.println(entries);
 
     }
 
