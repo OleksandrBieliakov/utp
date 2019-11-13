@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
@@ -29,7 +28,13 @@ public class InJarSearch implements Search<JarFile, JarEntry, JarEntry> {
         Predicate<JarEntry> hasTheContent = entry -> {
             System.out.println(entry);
             try (InputStream in = new BufferedInputStream(archive.getInputStream(entry))) {
-                return Arrays.equals(in.readAllBytes(), content.getBytes());
+                StringBuilder sb = new StringBuilder();
+                byte[] bytes = in.readAllBytes();
+                for(byte b : bytes)
+                    sb.append((char) b);
+                System.out.println(sb.toString() + "\n" + content);
+                System.out.println(sb.toString().equals(content));
+                return sb.toString().equals(content);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;

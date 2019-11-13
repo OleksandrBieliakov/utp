@@ -9,13 +9,14 @@ public class Test {
 
     private static final String CONTENT_1 = "some text\nsome text";
     private static final String JAR_PATH = "data\\ass7\\utp-pointed.jar";
+    private static final String JAR_PATH_2 = "data\\ass7\\data.jar";
     private static final InJarSearch IN_JAR_SEARCH = new InJarSearch();
 
     public static void main (String[] args) {
 
         JarFile zip = null;
         try {
-            zip = new JarFile(JAR_PATH);
+            zip = new JarFile(JAR_PATH_2);
         } catch (IOException e) {
             e.printStackTrace();
         }
