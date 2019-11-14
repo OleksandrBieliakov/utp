@@ -7,20 +7,18 @@ import java.util.jar.JarFile;
 
 public class Test {
 
-    private static final String CONTENT_1 = "some text\nsome text";
-    private static final String JAR_PATH = "data\\ass7\\utp-pointed.jar";
+    private static final String CONTENT_1 = "some text\r\nsome text";
     private static final String JAR_PATH_2 = "data\\ass7\\data.jar";
-    private static final InJarSearch IN_JAR_SEARCH = new InJarSearch();
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
 
-        JarFile zip = null;
+        JarFile jarFile = null;
         try {
-            zip = new JarFile(JAR_PATH_2);
+            jarFile = new JarFile(JAR_PATH_2);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<JarEntry> entries = IN_JAR_SEARCH.findByContent(zip, CONTENT_1);
+        List<JarEntry> entries = InJarSearchUtility.findByContent(jarFile, CONTENT_1);
         System.out.println(entries);
 
     }
