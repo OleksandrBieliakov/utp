@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.jar.JarEntry;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -25,7 +24,7 @@ public class InZipSearchUtility {
         Predicate<ZipEntry> notArchive = entry -> ExtensionCheckerUtility.notArchive(entry.toString());
         Predicate<ZipEntry> hasTheContent = entry -> {
             try (InputStream in = new BufferedInputStream(archive.getInputStream(entry))) {
-                return ContentSearchUtility.containsText(in, content);
+                return ContentSearchUtility.containsText(in, (int) entry.getSize(), content);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;

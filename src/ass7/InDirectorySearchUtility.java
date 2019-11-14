@@ -30,8 +30,9 @@ public class InDirectorySearchUtility {
         Predicate<Path> isRegularFile = Files::isRegularFile;
         Predicate<Path> notArchive = p -> ExtensionCheckerUtility.notArchive(p.toString());
         Predicate<Path> hasTheContent = p -> {
-            try (InputStream in = new FileInputStream(p.toFile())) {
-                return ContentSearchUtility.containsText(in, content);
+            File file = p.toFile();
+            try (InputStream in = new FileInputStream(file)) {
+                return ContentSearchUtility.containsText(in, (int) file.length(), content);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;

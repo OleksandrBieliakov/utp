@@ -4,13 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
 
 public class InJarSearchUtility {
 
@@ -29,7 +27,7 @@ public class InJarSearchUtility {
         Predicate<JarEntry> notArchive = entry -> ExtensionCheckerUtility.notArchive(entry.toString());
         Predicate<JarEntry> hasTheContent = entry -> {
             try (InputStream in = new BufferedInputStream(archive.getInputStream(entry))) {
-                return ContentSearchUtility.containsText(in, content);
+                return ContentSearchUtility.containsText(in, (int) entry.getSize(), content);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
