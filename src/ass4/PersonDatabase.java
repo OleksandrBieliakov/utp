@@ -3,6 +3,9 @@ package ass4;
 import ass4.comparators.BirthDateComparator;
 import ass4.comparators.FirstNameComparator;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -90,6 +93,48 @@ final class PersonDatabase {
 
     List<Person> bornOnDay(LocalDate date) {
         return mappedByDate.get(date);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PersonDatabase)) return false;
+        PersonDatabase database = (PersonDatabase) o;
+        return Objects.equals(notSorted, database.notSorted) &&
+                Objects.equals(sortedByFirstName, database.sortedByFirstName) &&
+                Objects.equals(sortedBySurnameFirstNameAndBirthDate, database.sortedBySurnameFirstNameAndBirthDate) &&
+                Objects.equals(sortedByBirthDate, database.sortedByBirthDate) &&
+                Objects.equals(mappedByDate, database.mappedByDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(notSorted, sortedByFirstName, sortedBySurnameFirstNameAndBirthDate, sortedByBirthDate, mappedByDate);
+    }
+
+    // assignment 8 - factory method based on deserialization
+    public static PersonDatabase deserialize(DataInputStream input) throws Assignment08Exception {
+        List<Person> people = new LinkedList<>();
+        int size;
+        try {
+            size = input.readInt();
+        } catch (IOException e) {
+            throw new Assignment08Exception("Error during deserializing person database size", e);
+        }
+        for (int i = 0; i < size; ++i)
+            people.add(Person.deserialize(input));
+        return new PersonDatabase(people);
+    }
+
+    // assignment 8
+    public void serialize(DataOutputStream output) throws Assignment08Exception {
+        try {
+            output.writeInt(size());
+        } catch (IOException e) {
+            throw new Assignment08Exception("Error during serializing person database size", e);
+        }
+        for (Person person : notSorted)
+            person.serialize(output);
     }
 
 }

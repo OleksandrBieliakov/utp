@@ -3,6 +3,7 @@ package ass4;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,8 @@ public class PersonDatabaseTest {
     private static final List<Person> SORTED_BY_FIRST_NAME = Arrays.asList(P9, P7, P8, P6, P5, P2, P3, P4, P1);
     private static final List<Person> SORTED_BY_SURNAME_THEN_FIRST_NAME_THEN_BIRTH_DATE = Arrays.asList(P9, P8, P7, P6, P5, P4, P2, P3, P1);
     private static final List<Person> SORTED_BY_DATE = Arrays.asList(P1, P5, P8, P2, P3, P6, P9, P4, P7);
+
+    private static final String PATH = "data\\ass8\\people";
 
     private static PersonDatabase database;
 
@@ -128,6 +131,24 @@ public class PersonDatabaseTest {
         Assert.assertEquals(3, people1.size());
         Assert.assertEquals(4, people2.size());
         Assert.assertEquals(2, people3.size());
+    }
+
+    @Test
+    public void serializeAndDeserialize() {
+        database = new PersonDatabase(UNSORTED);
+        PersonDatabase databaseDeserialized = null;
+        try (DataOutputStream out = new DataOutputStream(new FileOutputStream(PATH));
+             DataInputStream in = new DataInputStream(new FileInputStream(PATH))) {
+            database.serialize(out);
+            databaseDeserialized = PersonDatabase.deserialize(in);
+        } catch (IOException | Assignment08Exception e) {
+            e.printStackTrace();
+        }
+        Assert.assertNotNull(databaseDeserialized);
+        Assert.assertEquals(database, databaseDeserialized);
+        System.out.println("serializeAndDeserialize:");
+        System.out.println(database.notSorted());
+        System.out.println(databaseDeserialized.notSorted());
     }
 
 }
