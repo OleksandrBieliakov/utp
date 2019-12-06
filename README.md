@@ -1,4 +1,4 @@
 # utp
-Homework tasks for Universal Programming Techniques(PJATK) tutorials
+Homework tasks for Universal Programming Techniques(PJATK 3rd semester) tutorials
 
-Tasks descriptions are not posted in order to avoid any potential copyright issues.
+# Tasks descriptions are not posted in order to avoid any potential copyright issues.
