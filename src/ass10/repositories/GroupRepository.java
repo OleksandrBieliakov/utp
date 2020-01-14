@@ -9,12 +9,14 @@ import java.util.List;
 public class GroupRepository implements IGroupRepository {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/academy";
+    private static final String USER = "oleksandr";
+    private static final String PASSWORD = "topsecret";
 
     private Connection _connection;
 
     public GroupRepository() {
         try {
-            _connection = DriverManager.getConnection(URL);
+            _connection = DriverManager.getConnection(URL, USER, PASSWORD);
             _connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -137,7 +139,11 @@ public class GroupRepository implements IGroupRepository {
 
     @Override
     public void beginTransaction() {
-
+        try {
+            _connection.setSavepoint();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

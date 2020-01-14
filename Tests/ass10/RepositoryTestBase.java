@@ -7,7 +7,7 @@ import org.junit.Before;
 
 public abstract class RepositoryTestBase<TDTO extends DTOBase, TRepository extends IRepository<TDTO>> {
 
-	private TRepository _repository;
+	public TRepository _repository;
 
 	@Before
 	public void before() {

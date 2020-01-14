@@ -9,12 +9,14 @@ import java.util.List;
 public class UserRepository implements IUserRepository {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/academy";
+    private static final String USER = "oleksandr";
+    private static final String PASSWORD = "topsecret";
 
     private Connection _connection;
 
     public UserRepository() {
         try {
-            _connection = DriverManager.getConnection(URL);
+            _connection = DriverManager.getConnection(URL, USER, PASSWORD);
             _connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -137,7 +139,11 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void beginTransaction() {
-
+        try {
+            _connection.setSavepoint();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
