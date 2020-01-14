@@ -197,4 +197,13 @@ public class UserRepository implements IUserRepository {
         }
         return exists;
     }
+
+    @Override
+    public void closeConnection() {
+        try {
+            _connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

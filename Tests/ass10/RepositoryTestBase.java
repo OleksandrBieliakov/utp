@@ -7,22 +7,23 @@ import org.junit.Before;
 
 public abstract class RepositoryTestBase<TDTO extends DTOBase, TRepository extends IRepository<TDTO>> {
 
-	public TRepository _repository;
+    public TRepository _repository;
 
-	@Before
-	public void before() {
-		_repository = Create();
-		if (_repository != null) {
-			_repository.beginTransaction();
-		}
-	}
+    @Before
+    public void before() {
+        _repository = Create();
+        if (_repository != null) {
+            _repository.beginTransaction();
+        }
+    }
 
-	@After
-	public void after() {
-		if (_repository != null) {
-			_repository.rollbackTransaction();
-		}
-	}
+    @After
+    public void after() {
+        if (_repository != null) {
+            _repository.rollbackTransaction();
+            _repository.closeConnection();
+        }
+    }
 
-	protected abstract TRepository Create();
+    protected abstract TRepository Create();
 }
