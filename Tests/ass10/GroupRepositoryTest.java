@@ -24,7 +24,7 @@ public class GroupRepositoryTest extends RepositoryTestBase<GroupDTO, IGroupRepo
         int countBefore = _repository.getCount();
         _repository.add(GROUP);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(GROUP));
     }
 
@@ -35,11 +35,11 @@ public class GroupRepositoryTest extends RepositoryTestBase<GroupDTO, IGroupRepo
         int countBefore = _repository.getCount();
         _repository.add(GROUP);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(GROUP));
         _repository.update(GROUP_UPDATED);
         countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(GROUP_UPDATED));
         Assert.assertFalse(_repository.exists(GROUP));
     }
@@ -51,11 +51,11 @@ public class GroupRepositoryTest extends RepositoryTestBase<GroupDTO, IGroupRepo
         int countBefore = _repository.getCount();
         _repository.addOrUpdate(GROUP);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(GROUP));
         _repository.addOrUpdate(GROUP_UPDATED);
         countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(GROUP_UPDATED));
         Assert.assertFalse(_repository.exists(GROUP));
     }
@@ -66,7 +66,7 @@ public class GroupRepositoryTest extends RepositoryTestBase<GroupDTO, IGroupRepo
         int countBefore = _repository.getCount();
         _repository.add(GROUP);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(GROUP));
         _repository.delete(GROUP);
         countAfter = _repository.getCount();
@@ -80,7 +80,7 @@ public class GroupRepositoryTest extends RepositoryTestBase<GroupDTO, IGroupRepo
         int countBefore = _repository.getCount();
         _repository.add(GROUP);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(GROUP));
         GroupDTO group = _repository.findById(GROUP.getId());
         Assert.assertEquals(group, GROUP);
@@ -94,7 +94,7 @@ public class GroupRepositoryTest extends RepositoryTestBase<GroupDTO, IGroupRepo
         _repository.add(GROUP);
         _repository.add(GROUP2);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 2);
+        Assert.assertEquals(countBefore + 2, countAfter);
         Assert.assertTrue(_repository.exists(GROUP));
         Assert.assertTrue(_repository.exists(GROUP2));
         List<GroupDTO> groups = _repository.findByName("Gr");

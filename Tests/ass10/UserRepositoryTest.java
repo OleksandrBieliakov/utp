@@ -24,7 +24,7 @@ public final class UserRepositoryTest extends RepositoryTestBase<UserDTO, IUserR
         int countBefore = _repository.getCount();
         _repository.add(USER);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(USER));
     }
 
@@ -35,11 +35,11 @@ public final class UserRepositoryTest extends RepositoryTestBase<UserDTO, IUserR
         int countBefore = _repository.getCount();
         _repository.add(USER);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(USER));
         _repository.update(USER_UPDATED);
         countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(USER_UPDATED));
         Assert.assertFalse(_repository.exists(USER));
     }
@@ -51,11 +51,11 @@ public final class UserRepositoryTest extends RepositoryTestBase<UserDTO, IUserR
         int countBefore = _repository.getCount();
         _repository.addOrUpdate(USER);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(USER));
         _repository.addOrUpdate(USER_UPDATED);
         countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(USER_UPDATED));
         Assert.assertFalse(_repository.exists(USER));
     }
@@ -66,7 +66,7 @@ public final class UserRepositoryTest extends RepositoryTestBase<UserDTO, IUserR
         int countBefore = _repository.getCount();
         _repository.add(USER);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(USER));
         _repository.delete(USER);
         countAfter = _repository.getCount();
@@ -80,7 +80,7 @@ public final class UserRepositoryTest extends RepositoryTestBase<UserDTO, IUserR
         int countBefore = _repository.getCount();
         _repository.add(USER);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 1);
+        Assert.assertEquals(countBefore + 1, countAfter);
         Assert.assertTrue(_repository.exists(USER));
         UserDTO user = _repository.findById(USER.getId());
         Assert.assertEquals(user, USER);
@@ -94,7 +94,7 @@ public final class UserRepositoryTest extends RepositoryTestBase<UserDTO, IUserR
         _repository.add(USER);
         _repository.add(USER2);
         int countAfter = _repository.getCount();
-        Assert.assertEquals(countAfter, countBefore + 2);
+        Assert.assertEquals(countBefore + 2, countAfter);
         Assert.assertTrue(_repository.exists(USER));
         Assert.assertTrue(_repository.exists(USER2));
         List<UserDTO> users = _repository.findByName("se");

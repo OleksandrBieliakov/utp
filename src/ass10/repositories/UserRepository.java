@@ -28,7 +28,7 @@ public class UserRepository implements IUserRepository {
         List<UserDTO> users = new ArrayList<>();
         try {
             PreparedStatement statement = _connection.prepareStatement(
-                    "SELECT user_login, user_password " +
+                    "SELECT user_id, user_login, user_password " +
                             "FROM users " +
                             "WHERE user_login LIKE ?");
             statement.setString(1, "%" + username + "%");
@@ -57,10 +57,11 @@ public class UserRepository implements IUserRepository {
     public void add(UserDTO dto) {
         try {
             PreparedStatement statement = _connection.prepareStatement(
-                    "insert into users(user_login, user_password)" +
-                            "values (?, ?)");
-            statement.setString(1, dto.getLogin());
-            statement.setString(2, dto.getPassword());
+                    "insert into users(user_id, user_login, user_password)" +
+                            "values (?, ?, ?)");
+            statement.setInt(1, dto.getId());
+            statement.setString(2, dto.getLogin());
+            statement.setString(3, dto.getPassword());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -170,7 +171,8 @@ public class UserRepository implements IUserRepository {
         try {
             PreparedStatement statement = _connection.prepareStatement("SELECT count(1) from users");
             ResultSet result = statement.executeQuery();
-            count = result.getInt(1);
+            if (result.next())
+                count = result.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -181,10 +183,14 @@ public class UserRepository implements IUserRepository {
     public boolean exists(UserDTO dto) {
         boolean exists = false;
         try {
-            PreparedStatement statement = _connection.prepareStatement("SELECT count(1) from users where user_id=?");
+            PreparedStatement statement = _connection.prepareStatement(
+                    "SELECT count(1) from users " +
+                            "where user_id=? and user_login=? and user_password=?");
             statement.setInt(1, dto.getId());
+            statement.setString(2, dto.getLogin());
+            statement.setString(3, dto.getPassword());
             ResultSet result = statement.executeQuery();
-            if (result.getInt(1) > 0)
+            if (result.next() && result.getInt(1) > 0)
                 exists = true;
         } catch (SQLException e) {
             e.printStackTrace();

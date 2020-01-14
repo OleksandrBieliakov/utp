@@ -57,10 +57,11 @@ public class GroupRepository implements IGroupRepository {
     public void add(GroupDTO dto) {
         try {
             PreparedStatement statement = _connection.prepareStatement(
-                    "insert into groups(group_name, group_description)" +
-                            "values (?, ?)");
-            statement.setString(1, dto.getName());
-            statement.setString(2, dto.getDescription());
+                    "insert into groups(group_id, group_name, group_description)" +
+                            "values (?, ?, ?)");
+            statement.setInt(1, dto.getId());
+            statement.setString(2, dto.getName());
+            statement.setString(3, dto.getDescription());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -170,7 +171,8 @@ public class GroupRepository implements IGroupRepository {
         try {
             PreparedStatement statement = _connection.prepareStatement("SELECT count(1) from groups");
             ResultSet result = statement.executeQuery();
-            count = result.getInt(1);
+            if (result.next())
+                count = result.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -181,10 +183,14 @@ public class GroupRepository implements IGroupRepository {
     public boolean exists(GroupDTO dto) {
         boolean exists = false;
         try {
-            PreparedStatement statement = _connection.prepareStatement("SELECT count(1) from groups where group_id=?");
+            PreparedStatement statement = _connection.prepareStatement(
+                    "SELECT count(1) from groups " +
+                            "where group_id=? and group_name=? and group_description=?");
             statement.setInt(1, dto.getId());
+            statement.setString(2, dto.getName());
+            statement.setString(3, dto.getDescription());
             ResultSet result = statement.executeQuery();
-            if (result.getInt(1) > 0)
+            if (result.next() && result.getInt(1) > 0)
                 exists = true;
         } catch (SQLException e) {
             e.printStackTrace();
