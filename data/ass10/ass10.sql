@@ -3,13 +3,13 @@ drop table users;
 drop table groups;
 
 CREATE TABLE users(
-   user_id serial PRIMARY KEY,
+   user_id integer not null PRIMARY KEY,
    user_login VARCHAR (50) NOT NULL,
    user_password VARCHAR (50) NOT NULL
 );
 
 CREATE TABLE groups(
-   group_id serial PRIMARY KEY,
+   group_id integer not null PRIMARY KEY,
    group_name VARCHAR (250) NOT NULL,
    group_description VARCHAR (500)
 );
